@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI Project Workflow"
+  short_description: "Standardize lightweight AI project workflows"
+  default_prompt: "帮我给这个项目建立或优化 AI 协作流程、任务分级、project-state 自动维护、dev-log 和验证规则。"

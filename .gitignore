@@ -1,0 +1,29 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Runtime caches
+node_modules/
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+
+# Codex/local runtime noise
+.codex-cache/
+.cache/
