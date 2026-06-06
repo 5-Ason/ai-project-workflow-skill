@@ -13,7 +13,7 @@ description: Standardize lightweight AI collaboration and development workflows 
 
 1. 先审计仓库事实：读取 `AGENTS.md`、`CLAUDE.md`、README、项目文档、脚本、测试入口和现有日志/决策文档。不要先套模板。
 2. 判断当前诉求属于流程建设、流程审计、复杂迭代规划，还是普通开发任务。普通小修不引入额外文档流程。
-3. 若要建立或优化流程，先保留已有约定，再补最小缺口：任务分级、Current/Proposal、自动记录、项目状态维护、验证规则、高风险边界、Git 和完成汇报。
+3. 若要建立或优化流程，先保留已有约定，再补最小缺口：Todo 预备池、任务分级、Current/Proposal、自动记录、项目状态维护、验证规则、高风险边界、Git 和完成汇报。
 4. 写规则时使用项目自己的路径、技术栈和命令；不要把某个项目的端口、业务词、SQL 目录或框架约定硬套到其他仓库。
 5. 收尾前检查 diff、验证结果和新增文档范围；说明哪些规则已落地，哪些只是建议。
 
@@ -25,6 +25,14 @@ description: Standardize lightweight AI collaboration and development workflows 
 - `decision`：长期规则或技术路线选择。写 decision，记录背景、选择、备选方案、影响和复审条件；默认检查 project-state。
 
 需要更完整分级说明时读取 `references/iteration-levels.md`。
+
+## Todo 预备池与正式看板
+
+- 如果仓库需要管理“还没进入正式开发”的 bug、需求方向或优化想法，优先建立一个轻量 Todo 预备池，而不是把它们直接塞进正式迭代看板。
+- 推荐分层：Todo 看板只管待分流事项和当前状态；详情记录只放背景、复现、验收和关联材料；正式 iteration-index 或等价看板只记录已进入开发链路或已有沉淀的事项。
+- Todo 看板应作为状态唯一来源，详情文档不要重复维护状态，避免看板和详情漂移。
+- 事项从 Todo 进入开发时，再按 `direct`、`brief`、`standard` 或 `decision` 分流，并链接到 brief、PRD、设计说明、decision 或 dev-log。
+- 完成、取消或长期搁置的 Todo 应定期归档，避免当前看板无限变长。
 
 ## 项目状态维护
 
@@ -54,5 +62,5 @@ description: Standardize lightweight AI collaboration and development workflows 
 ## 输出要求
 
 - 如果用户只是要审计，输出问题、风险和建议，不改仓库。
-- 如果用户要求落地，优先改少量入口文档，例如 `AGENTS.md`、`docs/auto-recording.md`、`docs/project-state.md`、`docs/iteration-index.md` 或项目已有等价文件。
+- 如果用户要求落地，优先改少量入口文档，例如 `AGENTS.md`、`docs/auto-recording.md`、`docs/project-state.md`、`docs/todo/board.md`、`docs/iteration-index.md` 或项目已有等价文件。
 - 最终回复说明改了什么、验证了什么、记录在哪里；如果按规则不记录，也说明原因。
