@@ -1,46 +1,36 @@
 # AI Project Workflow Skill
 
-A Codex skill for standardizing lightweight AI collaboration workflows in a repository.
+An ultra-lightweight AI agent skill for standardizing practical, anti-bloat collaboration workflows in a code repository.
 
-It helps maintainers set up project-specific rules for AI coding agents without turning every small change into a heavyweight process. The skill focuses on practical repository governance: `AGENTS.md`, task levels, project memory, Current/Proposal separation, and evidence-based validation.
+It helps maintainers give coding agents just enough structure—clear rules, a compact factual snapshot, an active TODO list, and automated size guardrails—without drowning the repo in multi-file process ceremonies or ever-growing dev logs.
 
-## What This Skill Does
+## Philosophy (v2 Minimal)
 
-Use this skill when you want Codex to create, audit, or improve an AI development workflow for a codebase.
+Heavy multi-tier documentation workflows (`direct/brief/standard/decision` + `dev-log` + `iteration-index` + separate `prd/`/`design/`/`briefs/`/`decisions/` + multi-state boards) tend to bloat rapidly in solo or small-team repositories and burn context tokens on stale prose.
 
-It helps Codex:
+This skill converges repository governance onto **3 live docs + 2-tier cadence + 1 guardrail script**:
 
-- Create or refine `AGENTS.md` as the AI entry guide for a repository.
-- Define task levels: `direct`, `brief`, `standard`, and `decision`.
-- Keep project memory useful through `dev-log`, `iteration-index`, and `project-state` rules.
-- Separate `Current` facts from `Proposal` plans.
-- Add guardrails for risky operations, debugging, validation, Git, and final reporting.
-- Avoid over-documenting small fixes or duplicating rules across too many files.
-
-The skill is intentionally lightweight. It should not trigger for ordinary one-file fixes, simple explanations, or small implementation tasks unless the user explicitly asks to standardize the workflow.
-
-## Why It Exists
-
-AI coding agents work better when a repository tells them how to collaborate. Many projects need a small amount of structure:
-
-- What must the agent read first?
-- Which changes need a brief or PRD?
-- When should the agent update a development log?
-- What belongs in project state, and what should stay out?
-- Which checks must pass before the agent says the task is done?
-
-This skill turns those questions into a reusable workflow that Codex can adapt to each repository.
+- **3 Live Docs**
+  - `AGENTS.md`: stable coding rules, architecture boundaries, validation commands, and high-risk approvals (<= 220 lines).
+  - `docs/project-state.md`: overwrite-only factual snapshot of environments, active modules, invariants, and known limits (<= 150 lines / 12 KB).
+  - `docs/TODO.md`: single active work list (`In Progress` / `Todo` / `Tech Debt`); delete items when done (<= 120 lines / 10 KB).
+  - *(On demand)* `docs/specs/YYYY-MM-DD-<topic>.md`: one-file spec used **only** for major changes.
+- **2-Tier Cadence**
+  - **Direct Change (default)**: bug fixes, copy/UI tweaks, small configs, single-module enhancements → implement, verify, and let semantic Git commits be the history.
+  - **Single-File Spec First (major changes)**: cross-module contracts, schema migrations, permission/state-machine refactors, multi-module features → write one concise spec, confirm boundaries, implement, and update `project-state.md` only if stable facts changed.
+- **Automated Anti-Bloat Guardrails**
+  - Pair the rules with a tiny script (e.g., `scripts/check-doc-memory.mjs`) that enforces required entry files, line/byte caps, UTF-8 without BOM, and zero broken links in live docs.
 
 ## Repository Structure
 
 ```text
 .
-|-- SKILL.md                         # Skill trigger and core workflow
-|-- agents/openai.yaml               # UI metadata for Codex skill discovery
+|-- SKILL.md                          # Skill trigger and core minimal workflow
+|-- agents/openai.yaml                # UI metadata for skill discovery
 |-- references/
-|   |-- agent-guide-template.md       # AGENTS.md structure template
-|   |-- auto-recording.md             # Project memory and logging rules
-|   `-- iteration-levels.md           # direct / brief / standard / decision guide
+|   |-- agent-guide-template.md       # Compact AGENTS.md template
+|   |-- auto-recording.md             # Live-doc boundaries, spec template, and guardrail script guide
+|   `-- iteration-levels.md           # Two-tier cadence and workflow slimming principles
 |-- docs/
 |   `-- usage-examples.md             # Example prompts and expected outputs
 |-- CONTRIBUTING.md
@@ -50,78 +40,52 @@ This skill turns those questions into a reusable workflow that Codex can adapt t
 
 ## Installation
 
-Clone the repository into your Codex skills directory.
+Clone this repository into your agent's skills directory.
 
-### macOS / Linux
+### Codex (macOS / Linux)
 
 ```bash
 git clone https://github.com/5-Ason/ai-project-workflow-skill.git ~/.codex/skills/ai-project-workflow
 ```
 
-### Windows PowerShell
+### Codex (Windows PowerShell)
 
 ```powershell
 git clone https://github.com/5-Ason/ai-project-workflow-skill.git "$env:USERPROFILE\.codex\skills\ai-project-workflow"
 ```
 
-Restart Codex or start a new thread so the skill list reloads.
+### Antigravity / Other Skill-Compatible Agents
+
+Clone into your configured skills directory (for example `~/.gemini/config/skills/ai-project-workflow`) and restart or start a new session.
 
 ## Example Prompts
 
 ```text
-帮我审计这个仓库的 AGENTS.md，看看规则是不是太重、重复太多。
+查看我现在的开发流程和 AGENTS.md，是不是太冗余了？给一个极致精简的瘦身方案。
 ```
 
 ```text
-给这个项目建立轻量 AI 协作流程：任务分级、dev-log、project-state 和验证规则。
+给这个仓库建立一套极简的 AI 协作规范：AGENTS.md、project-state、TODO、单文件 spec 模板和防膨胀检查脚本。
 ```
 
 ```text
-把这个仓库的 AI 协作规范标准化，方便后续任务自动维护 dev-log 和 project-state。
-```
-
-```text
-这个项目已有开发流程了。对比一下，哪些规则该保留，哪些该精简？
+对比一下当前项目流程：哪些工程护栏必须保留，哪些过程文档可以归档精简？
 ```
 
 More examples are in [docs/usage-examples.md](docs/usage-examples.md).
 
-## Who Should Use It
-
-This skill is useful for maintainers who want AI agents to help with coding, review, triage, documentation, or release support while preserving repository-specific rules. It is especially helpful for small teams and solo maintainers who need project memory without a heavy process layer.
-
-## Project Memory Model
-
-The skill distinguishes between several memory surfaces:
-
-- `AGENTS.md`: stable rules the agent must know before every task.
-- `dev-log`: task-level history and verification results.
-- `iteration-index`: a compact index of product or implementation artifacts.
-- `project-state`: rolling facts that affect future development decisions.
-- `brief`, `PRD`, `design`, `decision`: deeper documents for larger or longer-lived changes.
-
-`project-state` is not a task log. Codex should evaluate it after each repository change, but only update it when stable facts change.
-
 ## Validation
-
-If you have the Codex skill creator utilities available, validate the skill folder with:
-
-```bash
-python path/to/quick_validate.py path/to/ai-project-workflow
-```
 
 At minimum, check that:
 
 - `SKILL.md` has valid frontmatter with `name` and `description`.
-- The skill name is lowercase hyphen-case.
+- The skill name is lowercase hyphen-case (`ai-project-workflow`).
+- All files are `UTF-8 without BOM` with valid relative links.
 - No private paths, tokens, secrets, project-specific credentials, or production data are committed.
-- Public-facing documentation explains how to install and use the skill.
 
 ## Scope
 
-This skill does not run external services, modify GitHub by itself, or enforce a specific framework. It gives Codex reusable instructions for creating repository-specific workflows.
-
-It is not a replacement for project tests, code review, or maintainer judgment. Treat it as a workflow guide that helps Codex make better local decisions.
+This skill does not run external services, modify GitHub by itself, or enforce a specific framework. It gives coding agents reusable instructions for keeping repository workflows lean, verifiable, and bloat-free.
 
 ## License
 
